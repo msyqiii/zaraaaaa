@@ -15,7 +15,7 @@
         html, body {
             width: 100%;
             height: 100%;
-            overflow-x: hidden; /* Mencegah layar goyang ke samping */
+            overflow-x: hidden; /* Mengunci total geseran ke samping */
         }
 
         body {
@@ -35,11 +35,11 @@
             position: relative;
         }
 
-        /* Animasi Hati & Teks Pujian Berterbangan */
+        /* PERBAIKAN UTAMA: Mengubah ke FIXED agar tidak merusak scroll halaman */
         .heart, .compliment {
-            position: absolute;
+            position: fixed;
             animation: floatUp 5.5s linear infinite;
-            bottom: -50px;
+            top: 105vh; /* Terkunci aman di luar layar bawah browser */
             z-index: 0;
             pointer-events: none;
             text-shadow: 0 2px 5px rgba(0,0,0,0.15); 
@@ -121,7 +121,7 @@
             font-size: 1.3rem;
         }
 
-        /* BARU: Foto Lingkaran Berdetak dengan Kilau Jantung Pink */
+        /* Foto Lingkaran Berdetak dengan Kilau Jantung Pink */
         .photo-frame {
             width: 160px;
             height: 160px;
@@ -200,7 +200,7 @@
             font-size: 0.95rem;
         }
 
-        /* SECTION VOUCHER DIGITAL (KLAIM LANGSUNG) */
+        /* SECTION VOUCHER DIGITAL */
         .voucher-section {
             display: none; 
             background: #ffffff; padding: 20px; border-radius: 15px; margin-top: 25px;
@@ -264,14 +264,12 @@
 <body>
 
     <div class="container">
-        <!-- FOTO UTAMA BULAT DI ATAS (zaraaa.jpeg) -->
+        <!-- FOTO UTAMA BULAT DI ATAS -->
         <div class="photo-frame">
             <img src="https://typical-moccasin-duxvbrc7.edgeone.app/zaraaa.jpeg" alt="Foto Zara" id="pacar-foto">
         </div>
 
         <h1>Happy Birthday My Fav Person! ❤️</h1>
-        
-        <!-- Subtitle dengan Teks Otomatis -->
         <p class="subtitle" id="typing-text"></p>
 
         <!-- Countdown -->
@@ -306,7 +304,7 @@
             </div>
         </div>
 
-        <!-- SECTION KARTU HADIAH / VOUCHER DIGITAL (KLAIM LANGSUNG DI TEMPAT) -->
+        <!-- SECTION VOUCHER DIGITAL -->
         <div id="voucher-section" class="voucher-section">
             <h3>🎁 Spesial Voucher Ulang Tahun Buat Zara</h3>
             <p style="font-size: 0.8rem; color: #666; margin-bottom: 10px;">Silakan klik klaim untuk menyimpan kupon hadiahmu yaa! ✨</p>
@@ -346,46 +344,34 @@
     </div>
 
     <script>
-        // DATA UNTUK ALASAN JATUH (Falling Compliments)
         const daftarAlasan = ["Cantik Banget", "Gemesin!", "Sabar Sekali", "Jawaban Doaku", "Milik Uqii ❤️", "Penyemangatku", "Kebaikanmu", "Sayang Uqii", "Suara Manismu"];
         let mulaiEfekAlasan = false;
 
-        // 1. KODE TEKS OTOMATIS (Typewriter)
+        // TYPEWRITER TEXT
         const txt = "Hari spesial untuk orang yang paling spesial dalam hidupku. 💕";
         let i = 0;
         function typeWriter() {
-            if (i < txt.length) {
-                document.getElementById("typing-text").innerHTML += txt.charAt(i);
-                i++;
-                setTimeout(typeWriter, 80);
-            }
+            if (i < txt.length) { document.getElementById("typing-text").innerHTML += txt.charAt(i); i++; setTimeout(typeWriter, 80); }
         }
         window.onload = typeWriter;
 
-        // 2. KODE TABURAN EMOT & PUJIAN (Banyak & Cepat - Opacity 1)
+        // FLOATING EMOTICONS & COMPLIMENTS (Sudah Diperbaiki Menggunakan Koordinat Terkontrol)
         function createElements() {
             const heart = document.createElement("div");
             heart.classList.add("heart");
-            
             const heartIcons = ["❤️", "💖", "💝", "💕", "🫶🏻", "🌸", "✨"];
             heart.innerText = heartIcons[Math.floor(Math.random() * heartIcons.length)];
-            
-            heart.style.left = Math.random() * 90 + "vw"; 
+            heart.style.left = Math.random() * 88 + "vw"; 
             heart.style.animationDuration = Math.random() * 3 + 2.5 + "s";
             heart.style.fontSize = Math.random() * 10 + 15 + "px";
-            
             document.body.appendChild(heart);
-            
-            setTimeout(() => {
-                heart.remove();
-            }, 5500);
+            setTimeout(() => { heart.remove(); }, 5500);
 
-            // Efek Sifat Baik Jatuh (Baru aktif setelah surat terbuka)
             if (mulaiEfekAlasan && Math.random() > 0.4) {
                 const comp = document.createElement("div");
                 comp.classList.add("compliment");
                 comp.innerText = daftarAlasan[Math.floor(Math.random() * daftarAlasan.length)];
-                comp.style.left = Math.random() * 80 + "vw";
+                comp.style.left = Math.random() * 75 + "vw";
                 comp.style.animationDuration = Math.random() * 2 + 3 + "s";
                 document.body.appendChild(comp);
                 setTimeout(() => { comp.remove(); }, 5500);
@@ -393,34 +379,25 @@
         }
         setInterval(createElements, 200); 
 
-        // 3. PENGATURAN TANGGAL ULANG TAHUN ZARA
-        const tanggalUltah = new Date("June 08, 2026 01:55:00").getTime();
-
+        // COUNTDOWN TIMER
+        const tanggalUltah = new Date("June 08, 2026 01:57:00").getTime();
         const hitungMundur = setInterval(function() {
-            const sekarang = new Date().getTime();
-            const selisih = tanggalUltah - sekarang;
-
-            const hari = Math.floor(selisih / (1000 * 60 * 60 * 24));
-            const jam = Math.floor((selisih % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-            const menit = Math.floor((selisih % (1000 * 60 * 60)) / (1000 * 60));
-            const detik = Math.floor((selisih % (1000 * 60)) / 1000);
+            const sekarang = new Date().getTime(); const selisih = tanggalUltah - sekarang;
+            const hari = Math.floor(selisih / (1000 * 60 * 60 * 24)); const jam = Math.floor((selisih % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const menit = Math.floor((selisih % (1000 * 60 * 60)) / (1000 * 60)); const detik = Math.floor((selisih % (1000 * 60)) / 1000);
 
             if (selisih > 0) {
-                document.getElementById("days").innerHTML = hari < 10 ? "0" + hari : hari;
-                document.getElementById("hours").innerHTML = jam < 10 ? "0" + jam : jam;
-                document.getElementById("minutes").innerHTML = menit < 10 ? "0" + menit : menit;
-                document.getElementById("seconds").innerHTML = detik < 10 ? "0" + detik : detik;
+                document.getElementById("days").innerHTML = hari < 10 ? "0" + hari : hari; document.getElementById("hours").innerHTML = jam < 10 ? "0" + jam : jam;
+                document.getElementById("minutes").innerHTML = menit < 10 ? "0" + menit : menit; document.getElementById("seconds").innerHTML = detik < 10 ? "0" + detik : detik;
             } else {
                 clearInterval(hitungMundur);
-                document.getElementById("days").innerHTML = "00";
-                document.getElementById("hours").innerHTML = "00";
-                document.getElementById("minutes").innerHTML = "00";
-                document.getElementById("seconds").innerHTML = "00";
+                document.getElementById("days").innerHTML = "00"; document.getElementById("hours").innerHTML = "00";
+                document.getElementById("minutes").innerHTML = "00"; document.getElementById("seconds").innerHTML = "00";
                 document.querySelector(".countdown").innerHTML = "<h2 style='color:#ff6b81; margin: 15px 0;'>🎉 HAPPY BIRTHDAY ZARAAAAA! 🎉</h2>";
             }
         }, 1000);
 
-        // 4. GAME BALON + PROTEKSI WAKTU
+        // GAME BALON + PROTEKSI WAKTU
         let jumlahBalonPecah = 0; const totalBalon = 5;
         function mulaiGameAtauProteksi() {
             const sekarang = new Date().getTime();
@@ -434,21 +411,18 @@
         }
 
         function pecahkanBalon(elemenBalon) {
-            elemenBalon.style.visibility = "hidden"; 
-            jumlahBalonPecah++;
+            elemenBalon.style.visibility = "hidden"; jumlahBalonPecah++;
             if (jumlahBalonPecah >= totalBalon) {
                 document.getElementById("balloon-area").style.display = "none";
                 document.getElementById("pesan-rahasia").style.display = "block";
-                
                 mulaiEfekAlasan = true;
                 document.getElementById("voucher-section").style.display = "block";
                 document.getElementById("buzzer-section").style.display = "block";
-                
                 alert("Yeeay! Semua balon pecah! Coba lihat, kata-kata pujian buat kamu langsung berjatuhan! Kapsul kado dan tombol rahasia juga udah kebuka di bawah! ✨💖");
             }
         }
 
-        // 5. KLAIM VOUCHER LANGSUNG
+        // KLAIM VOUCHER
         function klaimVoucherLangsung(elemenKupon, jenisVoucher) {
             if (elemenKupon.classList.contains('claimed')) return;
             elemenKupon.classList.add('claimed');
@@ -464,7 +438,7 @@
             }
         }
 
-        // 6. LOVE BUZZER
+        // LOVE BUZZER
         const teksBuzzer = [
             "Uqii juga kangen bangeeet sama Zaraaa! 🥺❤️",
             "Jangan cuek-cuek yaa, ayo ketemu! 🫶🏻",
@@ -477,17 +451,11 @@
             document.getElementById("buzzer-text").innerText = teksBuzzer[indexAcak];
         }
 
-        // 7. FUNGSI PUTAR MUSIK
+        // CONTROL MUSIK
         function putarMusik() {
-            const musik = document.getElementById("bg-music");
-            const tombol = document.querySelector(".btn-music");
-            if (musik.paused) {
-                musik.play();
-                tombol.innerHTML = "⏸️ Jeda Musik";
-            } else {
-                musik.pause();
-                tombol.innerHTML = "🎵 Putar Musik";
-            }
+            const musik = document.getElementById("bg-music"); const tombol = document.querySelector(".btn-music");
+            if (musik.paused) { musik.play(); tombol.innerHTML = "⏸️ Jeda Musik"; } 
+            else { musik.pause(); tombol.innerHTML = "🎵 Putar Musik"; }
         }
     </script>
 </body>
