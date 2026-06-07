@@ -15,7 +15,7 @@
         html, body {
             width: 100%;
             height: 100%;
-            overflow-x: hidden; /* Mengunci total geseran ke samping */
+            overflow-x: hidden; 
         }
 
         body {
@@ -35,11 +35,10 @@
             position: relative;
         }
 
-        /* PERBAIKAN UTAMA: Mengubah ke FIXED agar tidak merusak scroll halaman */
         .heart, .compliment {
             position: fixed;
             animation: floatUp 5.5s linear infinite;
-            top: 105vh; /* Terkunci aman di luar layar bawah browser */
+            top: 105vh; 
             z-index: 0;
             pointer-events: none;
             text-shadow: 0 2px 5px rgba(0,0,0,0.15); 
@@ -70,7 +69,7 @@
         .container {
             max-width: 600px;
             width: 100%;
-            background: rgba(255, 255, 255, 0.8); /* Efek kaca transparan premium */
+            background: rgba(255, 255, 255, 0.8); 
             padding: 25px 20px;
             border-radius: 20px;
             box-shadow: 0 10px 30px rgba(0,0,0,0.15);
@@ -97,7 +96,6 @@
             line-height: 1.4;
         }
 
-        /* Countdown Style */
         .countdown {
             display: flex;
             justify-content: center;
@@ -121,7 +119,6 @@
             font-size: 1.3rem;
         }
 
-        /* Foto Lingkaran Berdetak dengan Kilau Jantung Pink */
         .photo-frame {
             width: 160px;
             height: 160px;
@@ -163,11 +160,11 @@
             object-fit: cover;
         }
 
-        /* Surat/Pesan Style & Balon Game */
+        /* PERBAIKAN BALON BINGKAI */
         .letter-box {
             background: #ffffff;
             border: 2px dashed #ff6b81;
-            padding: 15px;
+            padding: 20px 15px; /* Ditambah ruang atas-bawah dan kanan-kiri */
             border-radius: 15px;
             margin-top: 20px;
             cursor: pointer;
@@ -181,12 +178,21 @@
         .balloon-game-area {
             display: none;
             justify-content: center;
-            gap: 15px;
-            margin: 20px 0;
-            min-height: 100px;
+            flex-wrap: wrap; /* Balon otomatis turun baris baru jika layar HP sempit */
+            gap: 15px; /* Jarak antar balon biar gak dempetan */
+            margin: 15px auto;
+            padding: 10px;
+            max-width: 90%; /* Mengunci posisi balon agar tidak menabrak bingkai */
             align-items: center;
         }
-        .balloon { font-size: 2.8rem; cursor: pointer; transition: transform 0.1s; display: inline-block; user-select: none; }
+        
+        .balloon { 
+            font-size: 2.6rem; 
+            cursor: pointer; 
+            transition: transform 0.1s; 
+            display: inline-block; 
+            user-select: none; 
+        }
         .balloon:hover { transform: scale(1.2); }
 
         .hidden-message {
@@ -238,7 +244,6 @@
         }
         .btn-buzzer:active { transform: scale(0.9); }
 
-        /* Musik & Tombol Style */
         .btn-music {
             background-color: #ff6b81;
             color: white;
@@ -253,18 +258,13 @@
             position: relative;
             z-index: 3;
         }
-
-        .btn-music:hover {
-            background-color: #ff4757;
-        }
+        .btn-music:hover { background-color: #ff4757; }
     </style>
-    <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
 </head>
 <body>
 
     <div class="container">
-        <!-- FOTO UTAMA BULAT DI ATAS -->
         <div class="photo-frame">
             <img src="https://typical-moccasin-duxvbrc7.edgeone.app/zaraaa.jpeg" alt="Foto Zara" id="pacar-foto">
         </div>
@@ -272,7 +272,6 @@
         <h1>Happy Birthday My Fav Person! ❤️</h1>
         <p class="subtitle" id="typing-text"></p>
 
-        <!-- Countdown -->
         <div class="countdown">
             <div class="time-box"><span id="days">00</span>Hari</div>
             <div class="time-box"><span id="hours">00</span>Jam</div>
@@ -338,7 +337,6 @@
             <p id="buzzer-text" style="font-weight: bold; color: #ff4757; margin-top: 10px; min-height: 20px;"></p>
         </div>
 
-        <!-- Tombol Musik -->
         <audio id="bg-music" src="https://preliminary-harlequin-i632odai.edgeone.app/ssstik.io_1780779742906.mp3" loop></audio>
         <button class="btn-music" onclick="putarMusik()">🎵 Putar Musik</button>
     </div>
@@ -347,7 +345,6 @@
         const daftarAlasan = ["Cantik Banget", "Gemesin!", "Sabar Sekali", "Jawaban Doaku", "Milik Uqii ❤️", "Penyemangatku", "Kebaikanmu", "Sayang Uqii", "Suara Manismu"];
         let mulaiEfekAlasan = false;
 
-        // TYPEWRITER TEXT
         const txt = "Hari spesial untuk orang yang paling spesial dalam hidupku. 💕";
         let i = 0;
         function typeWriter() {
@@ -355,7 +352,6 @@
         }
         window.onload = typeWriter;
 
-        // FLOATING EMOTICONS & COMPLIMENTS (Sudah Diperbaiki Menggunakan Koordinat Terkontrol)
         function createElements() {
             const heart = document.createElement("div");
             heart.classList.add("heart");
@@ -379,8 +375,7 @@
         }
         setInterval(createElements, 200); 
 
-        // COUNTDOWN TIMER
-        const tanggalUltah = new Date("June 08, 2026 01:57:00").getTime();
+        const tanggalUltah = new Date("June 08, 2026 02:05:00").getTime();
         const hitungMundur = setInterval(function() {
             const sekarang = new Date().getTime(); const selisih = tanggalUltah - sekarang;
             const hari = Math.floor(selisih / (1000 * 60 * 60 * 24)); const jam = Math.floor((selisih % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
@@ -397,8 +392,6 @@
             }
         }, 1000);
 
-        // GAME BALON + PROTEKSI WAKTU
-        let jumlahBalonPecah = 0; const totalBalon = 5;
         function mulaiGameAtauProteksi() {
             const sekarang = new Date().getTime();
             if (sekarang < tanggalUltah) {
@@ -422,7 +415,6 @@
             }
         }
 
-        // KLAIM VOUCHER
         function klaimVoucherLangsung(elemenKupon, jenisVoucher) {
             if (elemenKupon.classList.contains('claimed')) return;
             elemenKupon.classList.add('claimed');
@@ -438,7 +430,6 @@
             }
         }
 
-        // LOVE BUZZER
         const teksBuzzer = [
             "Uqii juga kangen bangeeet sama Zaraaa! 🥺❤️",
             "Jangan cuek-cuek yaa, ayo ketemu! 🫶🏻",
@@ -451,7 +442,6 @@
             document.getElementById("buzzer-text").innerText = teksBuzzer[indexAcak];
         }
 
-        // CONTROL MUSIK
         function putarMusik() {
             const musik = document.getElementById("bg-music"); const tombol = document.querySelector(".btn-music");
             if (musik.paused) { musik.play(); tombol.innerHTML = "⏸️ Jeda Musik"; } 
