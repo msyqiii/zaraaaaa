@@ -281,7 +281,7 @@
         setInterval(createElements, 200); 
 
         // COUNTDOWN TIMER
-        const tanggalUltah = new Date("June 08, 2026 01:32:00").getTime();
+        const tanggalUltah = new Date("June 08, 2026 01:37:00").getTime();
         const hitungMundur = setInterval(function() {
             const sekarang = new Date().getTime(); const selisih = tanggalUltah - sekarang;
             const hari = Math.floor(selisih / (1000 * 60 * 60 * 24)); const jam = Math.floor((selisih % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
