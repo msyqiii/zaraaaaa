@@ -160,11 +160,10 @@
             object-fit: cover;
         }
 
-        /* PERBAIKAN BALON BINGKAI */
         .letter-box {
             background: #ffffff;
             border: 2px dashed #ff6b81;
-            padding: 20px 15px; /* Ditambah ruang atas-bawah dan kanan-kiri */
+            padding: 20px 15px;
             border-radius: 15px;
             margin-top: 20px;
             cursor: pointer;
@@ -175,19 +174,20 @@
             transform: scale(1.02);
         }
 
+        /* UKURAN & TATA LETAK 21 BALON AGAR RAPI */
         .balloon-game-area {
             display: none;
             justify-content: center;
-            flex-wrap: wrap; /* Balon otomatis turun baris baru jika layar HP sempit */
-            gap: 15px; /* Jarak antar balon biar gak dempetan */
+            flex-wrap: wrap; 
+            gap: 12px; 
             margin: 15px auto;
             padding: 10px;
-            max-width: 90%; /* Mengunci posisi balon agar tidak menabrak bingkai */
+            max-width: 95%; 
             align-items: center;
         }
         
         .balloon { 
-            font-size: 2.6rem; 
+            font-size: 2.2rem; /* Diperkecil sedikit agar pas muat 21 balon di layar HP */
             cursor: pointer; 
             transition: transform 0.1s; 
             display: inline-block; 
@@ -279,13 +279,30 @@
             <div class="time-box"><span id="seconds">00</span>Detik</div>
         </div>
 
-        <!-- GAME PECAHKAN BALON UNTUK BUKA SURAT -->
+        <!-- GAME PECAHKAN 21 BALON UNTUK BUKA SURAT -->
         <div class="letter-box">
             <div id="tombol-memicu-game" onclick="mulaiGameAtauProteksi()">
                 <h3 style="color: #ff6b81; font-size: 1.1rem;" id="teks-tombol-surat">✉️ Klik untuk membuka surat dari akuuu🫶🏻...</h3>
             </div>
 
+            <!-- PAS 21 BALON UNTUK ZARA YANG BERUMUR 21 TAHUN -->
             <div id="balloon-area" class="balloon-game-area">
+                <span class="balloon" onclick="pecahkanBalon(this)">🎈</span>
+                <span class="balloon" onclick="pecahkanBalon(this)">🎈</span>
+                <span class="balloon" onclick="pecahkanBalon(this)">🎈</span>
+                <span class="balloon" onclick="pecahkanBalon(this)">🎈</span>
+                <span class="balloon" onclick="pecahkanBalon(this)">🎈</span>
+                <span class="balloon" onclick="pecahkanBalon(this)">🎈</span>
+                <span class="balloon" onclick="pecahkanBalon(this)">🎈</span>
+                <span class="balloon" onclick="pecahkanBalon(this)">🎈</span>
+                <span class="balloon" onclick="pecahkanBalon(this)">🎈</span>
+                <span class="balloon" onclick="pecahkanBalon(this)">🎈</span>
+                <span class="balloon" onclick="pecahkanBalon(this)">🎈</span>
+                <span class="balloon" onclick="pecahkanBalon(this)">🎈</span>
+                <span class="balloon" onclick="pecahkanBalon(this)">🎈</span>
+                <span class="balloon" onclick="pecahkanBalon(this)">🎈</span>
+                <span class="balloon" onclick="pecahkanBalon(this)">🎈</span>
+                <span class="balloon" onclick="pecahkanBalon(this)">🎈</span>
                 <span class="balloon" onclick="pecahkanBalon(this)">🎈</span>
                 <span class="balloon" onclick="pecahkanBalon(this)">🎈</span>
                 <span class="balloon" onclick="pecahkanBalon(this)">🎈</span>
@@ -342,6 +359,10 @@
     </div>
 
     <script>
+        // DI SINI VARIABEL PENGHITUNG YANG TADI TERHAPUS SUDAH DIKEMBALIKAN
+        let jumlahBalonPecah = 0; 
+        const totalBalon = 21; // Jumlah target dirubah menjadi 21 balon
+
         const daftarAlasan = ["Cantik Banget", "Gemesin!", "Sabar Sekali", "Jawaban Doaku", "Milik Uqii ❤️", "Penyemangatku", "Kebaikanmu", "Sayang Uqii", "Suara Manismu"];
         let mulaiEfekAlasan = false;
 
@@ -375,7 +396,7 @@
         }
         setInterval(createElements, 200); 
 
-        const tanggalUltah = new Date("June 08, 2026 02:05:00").getTime();
+        const tanggalUltah = new Date("June 08, 2026 02:10:00").getTime();
         const hitungMundur = setInterval(function() {
             const sekarang = new Date().getTime(); const selisih = tanggalUltah - sekarang;
             const hari = Math.floor(selisih / (1000 * 60 * 60 * 24)); const jam = Math.floor((selisih % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
@@ -399,19 +420,21 @@
             } else {
                 document.getElementById("tombol-memicu-game").style.display = "none";
                 document.getElementById("balloon-area").style.display = "flex";
-                alert("Pecahkan semua balon di bawah ini untuk memunculkan suratnya! 🎈💥");
+                alert("Spesial umur 21, yuk pecahkan 21 balon di bawah ini untuk memunculkan suratnya! 🎈💥");
             }
         }
 
         function pecahkanBalon(elemenBalon) {
-            elemenBalon.style.visibility = "hidden"; jumlahBalonPecah++;
+            elemenBalon.style.visibility = "hidden"; 
+            jumlahBalonPecah++; // Nilai bertambah setiap klik balon
+            
             if (jumlahBalonPecah >= totalBalon) {
                 document.getElementById("balloon-area").style.display = "none";
                 document.getElementById("pesan-rahasia").style.display = "block";
                 mulaiEfekAlasan = true;
                 document.getElementById("voucher-section").style.display = "block";
                 document.getElementById("buzzer-section").style.display = "block";
-                alert("Yeeay! Semua balon pecah! Coba lihat, kata-kata pujian buat kamu langsung berjatuhan! Kapsul kado dan tombol rahasia juga udah kebuka di bawah! ✨💖");
+                alert("Yeeay! 21 Balon sukses dipecahkan! Coba lihat, kata-kata pujian buat kamu langsung berjatuhan! Kapsul kado dan tombol rahasia juga udah kebuka di bawah! ✨💖");
             }
         }
 
