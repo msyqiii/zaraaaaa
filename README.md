@@ -12,10 +12,12 @@
             font-family: 'Poppins', sans-serif;
         }
 
+        /* PERBAIKAN UTAMA: Mengunci layar total agar tidak gerak/goyang sendiri */
         html, body {
             width: 100%;
             height: 100%;
-            overflow-x: hidden; 
+            overflow: hidden; /* Mengunci scroll bar horizontal & vertikal utama */
+            position: relative;
         }
 
         body {
@@ -28,16 +30,16 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            padding: 20px;
+            justify-content: center; /* Membuat kotak selalu pas di tengah layar HP */
+            padding: 15px;
             min-height: 100vh;
-            position: relative;
         }
 
-        /* Efek Taburan Emot & Sifat Baik Zara yang Jatuh (Falling Compliments) */
+        /* Perbaikan elemen terbang agar tidak merusak ukuran layar */
         .heart, .compliment {
             position: absolute;
-            animation: floatUp 5.5s linear infinite;
-            bottom: -50px;
+            animation: floatUp 5s linear infinite;
+            top: 105vh; /* Muncul dari luar layar bawah, bukan memicu overflow */
             z-index: 0;
             pointer-events: none;
             text-shadow: 0 2px 5px rgba(0,0,0,0.15); 
@@ -56,38 +58,40 @@
 
         @keyframes floatUp {
             0% { transform: translateY(0) translateX(0) rotate(0deg); opacity: 1; }
-            100% { transform: translateY(-110vh) translateX(30px) rotate(360deg); opacity: 0; }
+            100% { transform: translateY(-120vh) translateX(30px) rotate(360deg); opacity: 0; }
         }
 
         .container {
-            max-width: 600px;
+            max-width: 500px;
             width: 100%;
             background: rgba(255, 255, 255, 0.8); 
-            padding: 25px 20px;
+            padding: 20px 15px;
             border-radius: 20px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
             text-align: center;
             backdrop-filter: blur(10px);
             -webkit-backdrop-filter: blur(10px);
-            margin-top: 10px;
-            margin-bottom: 30px;
             z-index: 2; 
             position: relative;
+            max-height: 90vh; /* Agar pas di layar HP model apa saja */
+            overflow-y: auto; /* Jika isi di dalam kotak memanjang (seperti pas surat dibuka), bagian dalam kotaknya saja yang bisa di-scroll, layarnya tetap diam */
+            scrollbar-width: none; /* Sembunyikan scrollbar di Firefox */
         }
+        .container::-webkit-scrollbar { display: none; } /* Sembunyikan scrollbar di Chrome/Safari */
 
-        h1 { color: #ff6b81; margin-bottom: 10px; font-size: 1.8rem; }
-        p.subtitle { font-size: 1rem; color: #555; margin-bottom: 20px; min-height: 45px; line-height: 1.4; }
+        h1 { color: #ff6b81; margin-bottom: 5px; font-size: 1.6rem; }
+        p.subtitle { font-size: 0.9rem; color: #555; margin-bottom: 15px; min-height: 45px; line-height: 1.4; }
 
-        .countdown { display: flex; justify-content: center; gap: 10px; margin: 20px 0; }
+        .countdown { display: flex; justify-content: center; gap: 8px; margin: 15px 0; }
         .time-box {
-            background: #ff6b81; color: white; padding: 8px 10px; border-radius: 10px;
-            font-weight: bold; min-width: 65px; font-size: 0.8rem; box-shadow: 0 4px 10px rgba(255, 107, 129, 0.3);
+            background: #ff6b81; color: white; padding: 6px 8px; border-radius: 10px;
+            font-weight: bold; min-width: 60px; font-size: 0.75rem; box-shadow: 0 4px 10px rgba(255, 107, 129, 0.3);
         }
-        .time-box span { display: block; font-size: 1.3rem; }
+        .time-box span { display: block; font-size: 1.2rem; }
 
         .photo-frame {
-            width: 160px; height: 160px; border-radius: 50%; border: 5px solid white;
-            overflow: hidden; margin: 0 auto 15px auto; box-shadow: 0 5px 15px rgba(0,0,0,0.15);
+            width: 140px; height: 140px; border-radius: 50%; border: 4px solid white;
+            overflow: hidden; margin: 0 auto 10px auto; box-shadow: 0 5px 15px rgba(0,0,0,0.15);
             animation: pulse 3s infinite;
         }
         @keyframes pulse {
@@ -97,77 +101,67 @@
         }
         .photo-frame img { width: 100%; height: 100%; object-fit: cover; }
 
-        /* AREA GAME MELETUSKAN BALON */
         .letter-box {
-            background: #ffffff; border: 2px dashed #ff6b81; padding: 15px;
-            border-radius: 15px; margin-top: 20px; cursor: pointer; transition: transform 0.3s;
+            background: #ffffff; border: 2px dashed #ff6b81; padding: 12px;
+            border-radius: 15px; margin-top: 15px; cursor: pointer;
         }
         .balloon-game-area {
-            display: none; justify-content: center; gap: 15px; margin: 20px 0;
-            min-height: 100px; align-items: center;
+            display: none; justify-content: center; gap: 12px; margin: 15px 0;
+            min-height: 80px; align-items: center;
         }
-        .balloon { font-size: 2.8rem; cursor: pointer; transition: transform 0.1s; display: inline-block; user-select: none; }
+        .balloon { font-size: 2.5rem; cursor: pointer; transition: transform 0.1s; display: inline-block; user-select: none; }
         .balloon:hover { transform: scale(1.2); }
         
         .hidden-message {
             display: none; margin-top: 15px; line-height: 1.6; color: #4a4a4a;
             text-align: left; border-top: 1px solid #eee; padding-top: 15px;
-            font-size: 0.95rem; max-height: 350px; overflow-y: auto;  
+            font-size: 0.9rem;
         }
 
-        /* SECTION VOUCHER DIGITAL (KLAIM LANGSUNG DI WEB) */
+        /* SECTION VOUCHER DIGITAL */
         .voucher-section {
             display: none; 
-            background: #ffffff; padding: 20px; border-radius: 15px; margin-top: 25px;
-            border: 2px solid #fbc2eb; box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+            background: #ffffff; padding: 15px; border-radius: 15px; margin-top: 20px;
+            border: 2px solid #fbc2eb;
         }
-        .voucher-section h3 { color: #ff6b81; font-size: 1.1rem; margin-bottom: 10px; }
-        .voucher-container { display: flex; flex-direction: column; gap: 12px; margin-top: 15px; }
+        .voucher-section h3 { color: #ff6b81; font-size: 1rem; margin-bottom: 5px; }
+        .voucher-container { display: flex; flex-direction: column; gap: 10px; margin-top: 10px; }
         
         .voucher-card {
             background: linear-gradient(135deg, #fff5f5, #fff); border: 2px dashed #ff6b81;
-            padding: 12px; border-radius: 10px; text-align: left; position: relative;
-            transition: 0.2s;
+            padding: 10px; border-radius: 10px; text-align: left; position: relative;
         }
-        .voucher-title { font-weight: bold; color: #ff6b81; font-size: 0.9rem; }
-        .voucher-desc { font-size: 0.8rem; color: #666; margin-top: 2px; padding-right: 80px; }
+        .voucher-title { font-weight: bold; color: #ff6b81; font-size: 0.8rem; }
+        .voucher-desc { font-size: 0.75rem; color: #666; margin-top: 2px; padding-right: 75px; }
         
         .btn-claim {
-            position: absolute; right: 12px; top: 50%; transform: translateY(-50%);
-            background: #ff6b81; color: white; border: none; padding: 6px 12px;
-            border-radius: 6px; font-size: 0.75rem; font-weight: bold; cursor: pointer;
-            transition: 0.3s;
+            position: absolute; right: 8px; top: 50%; transform: translateY(-50%);
+            background: #ff6b81; color: white; border: none; padding: 5px 10px;
+            border-radius: 6px; font-size: 0.7rem; font-weight: bold; cursor: pointer;
         }
-        /* Style ketika voucher sudah sukses diklaim */
-        .voucher-card.claimed {
-            background: #f1f2f6; border-color: #ced6e0;
-        }
+        .voucher-card.claimed { background: #f1f2f6; border-color: #ced6e0; }
         .voucher-card.claimed .voucher-title { color: #a4b0be; }
-        .voucher-card.claimed .btn-claim {
-            background: #ced6e0; color: #ffffff; cursor: default;
-        }
+        .voucher-card.claimed .btn-claim { background: #ced6e0; color: #ffffff; cursor: default; }
 
         /* LOVE BUZZER STYLE */
         .buzzer-section {
             display: none; 
-            margin-top: 25px; background: #ffffff; padding: 20px; border-radius: 15px;
+            margin-top: 20px; background: #ffffff; padding: 15px; border-radius: 15px;
             border: 2px solid #ff6b81;
         }
         .btn-buzzer {
             background: radial-gradient(circle, #ff4757, #ff6b81); color: white;
-            border: none; width: 85px; height: 85px; border-radius: 50%; font-size: 1.8rem;
-            cursor: pointer; box-shadow: 0 6px 20px rgba(255, 71, 87, 0.4); transition: transform 0.1s;
-            display: block; margin: 10px auto;
+            border: none; width: 70px; height: 70px; border-radius: 50%; font-size: 1.5rem;
+            cursor: pointer; box-shadow: 0 4px 15px rgba(255, 71, 87, 0.4); display: block; margin: 8px auto;
         }
-        .btn-buzzer:active { transform: scale(0.9); box-shadow: 0 3px 10px rgba(255, 71, 87, 0.4); }
+        .btn-buzzer:active { transform: scale(0.9); }
 
         .btn-music {
-            background-color: #ff6b81; color: white; border: none; padding: 12px 25px;
-            border-radius: 25px; font-size: 1rem; cursor: pointer; margin-top: 20px;
+            background-color: #ff6b81; color: white; border: none; padding: 10px 20px;
+            border-radius: 25px; font-size: 0.9rem; cursor: pointer; margin-top: 15px;
             transition: 0.3s; box-shadow: 0 4px 15px rgba(255, 107, 129, 0.2);
             position: relative; z-index: 3;
         }
-        .btn-music:hover { background-color: #ff4757; }
     </style>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
 </head>
@@ -191,7 +185,7 @@
         <!-- GAME PECAHKAN BALON UNTUK BUKA SURAT -->
         <div class="letter-box">
             <div id="tombol-memicu-game" onclick="mulaiGameAtauProteksi()">
-                <h3 style="color: #ff6b81; font-size: 1.1rem;" id="teks-tombol-surat">✉️ Klik untuk membuka surat dari akuuu🫶...</h3>
+                <h3 style="color: #ff6b81; font-size: 1rem;" id="teks-tombol-surat">✉️ Klik untuk membuka surat dari akuuu🫶...</h3>
             </div>
 
             <div id="balloon-area" class="balloon-game-area">
@@ -212,10 +206,10 @@
             </div>
         </div>
 
-        <!-- SECTION KARTU HADIAH / VOUCHER DIGITAL (KLAIM LANGSUNG DI TEMPAT) -->
+        <!-- SECTION KARTU HADIAH / VOUCHER DIGITAL -->
         <div id="voucher-section" class="voucher-section">
             <h3>🎁 Spesial Voucher Ulang Tahun Buat Zara</h3>
-            <p style="font-size: 0.8rem; color: #666; margin-bottom: 10px;">Silakan klik klaim untuk menyimpan kupon hadiahmu yaa! ✨</p>
+            <p style="font-size: 0.75rem; color: #666; margin-bottom: 5px;">Silakan klik klaim untuk menyimpan kupon hadiahmu yaa! ✨</p>
             
             <div class="voucher-container">
                 <div class="voucher-card" onclick="klaimVoucherLangsung(this, 'Makan Bareng')">
@@ -240,10 +234,10 @@
 
         <!-- SECTION TOMBOL SPAM KANGEN (LOVE BUZZER) -->
         <div id="buzzer-section" class="buzzer-section">
-            <h3 style="color: #ff6b81; font-size: 1.1rem;">🚨 Love Buzzer Interaktif</h3>
-            <p style="font-size: 0.8rem; color:#777;">Pencet tombol hati di bawah kalau kamu lagi kangen Uqii sekarang! 😜</p>
+            <h3 style="color: #ff6b81; font-size: 1rem;">🚨 Love Buzzer Interaktif</h3>
+            <p style="font-size: 0.75rem; color:#777;">Pencet tombol hati di bawah kalau kamu lagi kangen Uqii sekarang! 😜</p>
             <button class="btn-buzzer" onclick="pencetBuzzer()">❤️</button>
-            <p id="buzzer-text" style="font-weight: bold; color: #ff4757; margin-top: 10px; min-height: 20px;"></p>
+            <p id="buzzer-text" style="font-weight: bold; color: #ff4757; margin-top: 5px; font-size: 0.85rem; min-height: 20px;"></p>
         </div>
 
         <audio id="bg-music" src="https://preliminary-harlequin-i632odai.edgeone.app/ssstik.io_1780779742906.mp3" loop></audio>
@@ -251,8 +245,7 @@
     </div>
 
     <script>
-        // DATA UNTUK ALASAN JATUH (Falling Compliments)
-        const daftarAlasan = ["Cantik Banget", "Gemesin!", "Sabar Sekali", "Jawaban Doaku", "Milik Uqii ❤️", "Penyemangatku", "Kebaikanmu", "Sayang Uqii", "Suara Manismu"];
+        const daftarAlasan = ["Cantik Banget", "Gemesin!", "Penyemangatku"];
         let mulaiEfekAlasan = false;
 
         // TYPEWRITER TEXT
@@ -263,32 +256,32 @@
         }
         window.onload = typeWriter;
 
-        // FLOATING EMOTICONS & COMPLIMENTS
+        // FLOATING EMOTICONS & COMPLIMENTS (Dikunci koordinatnya agar aman)
         function createElements() {
             const heart = document.createElement("div");
             heart.classList.add("heart");
             const heartIcons = ["❤️", "💖", "💝", "💕", "🫶🏻", "🌸", "✨"];
             heart.innerText = heartIcons[Math.floor(Math.random() * heartIcons.length)];
-            heart.style.left = Math.random() * 90 + "vw"; 
+            heart.style.left = Math.random() * 85 + "vw"; 
             heart.style.animationDuration = Math.random() * 3 + 2.5 + "s";
-            heart.style.fontSize = Math.random() * 10 + 15 + "px";
+            heart.style.fontSize = Math.random() * 8 + 14 + "px";
             document.body.appendChild(heart);
-            setTimeout(() => { heart.remove(); }, 5500);
+            setTimeout(() => { heart.remove(); }, 5200);
 
             if (mulaiEfekAlasan && Math.random() > 0.4) {
                 const comp = document.createElement("div");
                 comp.classList.add("compliment");
                 comp.innerText = daftarAlasan[Math.floor(Math.random() * daftarAlasan.length)];
-                comp.style.left = Math.random() * 80 + "vw";
+                comp.style.left = Math.random() * 75 + "vw";
                 comp.style.animationDuration = Math.random() * 2 + 3 + "s";
                 document.body.appendChild(comp);
-                setTimeout(() => { comp.remove(); }, 5500);
+                setTimeout(() => { comp.remove(); }, 5200);
             }
         }
         setInterval(createElements, 200); 
 
         // COUNTDOWN TIMER
-        const tanggalUltah = new Date("July 05, 2026 00:00:00").getTime();
+        const tanggalUltah = new Date("June 08, 2026 01:32:00").getTime();
         const hitungMundur = setInterval(function() {
             const sekarang = new Date().getTime(); const selisih = tanggalUltah - sekarang;
             const hari = Math.floor(selisih / (1000 * 60 * 60 * 24)); const jam = Math.floor((selisih % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
@@ -300,7 +293,7 @@
                 clearInterval(hitungMundur);
                 document.getElementById("days").innerHTML = "00"; document.getElementById("hours").innerHTML = "00";
                 document.getElementById("minutes").innerHTML = "00"; document.getElementById("seconds").innerHTML = "00";
-                document.querySelector(".countdown").innerHTML = "<h2 style='color:#ff6b81; margin: 15px 0;'>🎉 HAPPY BIRTHDAY ZARAAAAA! 🎉</h2>";
+                document.querySelector(".countdown").innerHTML = "<h2 style='color:#ff6b81; margin: 10px 0;'>🎉 HAPPY BIRTHDAY ZARAAAAA! 🎉</h2>";
             }
         }, 1000);
 
@@ -331,29 +324,23 @@
             }
         }
 
-        // FUNGSI KLAIM VOUCHER LANGSUNG DI WEB (TIDAK KIRIM KE WA)
+        // KLAIM VOUCHER LANGSUNG
         function klaimVoucherLangsung(elemenKupon, jenisVoucher) {
-            // Cek jika kupon sudah pernah diklaim sebelumnya agar tidak spam
             if (elemenKupon.classList.contains('claimed')) return;
-
-            // Tambahkan class claimed untuk mengubah desain kupon menjadi abu-abu tanda sukses
             elemenKupon.classList.add('claimed');
-            
-            // Ubah teks tombol klaim di dalam kupon tersebut
             const tombol = elemenKupon.querySelector('.btn-claim');
             tombol.innerText = "✓ Diklaim";
 
-            // Berikan ucapan pop-up konfirmasi yang lucu sesuai voucher yang dipilih
             if (jenisVoucher === 'Makan Bareng') {
-                alert("🎟️ Voucher Makan Bareng BERHASIL DIKLAIM!\n\nKupon disimpan di HP kamu. Jangan lupa tagih Uqii pas ketemu buat makan sepuasnya yaa! 🍕🥳");
+                alert("🎟️ Voucher Makan Bareng BERHASIL DIKLAIM!\n\nJangan lupa tagih Uqii pas ketemu buat makan sepuasnya yaa! 🍕🥳");
             } else if (jenisVoucher === 'Bebas Marah') {
-                alert("🎟️ Voucher Bebas Marah BERHASIL DIKLAIM!\n\nSelamat! Kamu dapet hak istimewa bebas ngambek seharian penuh ke Uqii tanpa didebat. Gunakan dengan bijak yaa! 😜🤫");
+                alert("🎟️ Voucher Bebas Marah BERHASIL DIKLAIM!\n\nSelamat! Kamu dapet hak istimewa bebas ngambek seharian penuh ke Uqii tanpa didebat. 😜🤫");
             } else if (jenisVoucher === 'Jalan-Jalan Weekend') {
-                alert("🎟️ Voucher Jalan-Jalan BERHASIL DIKLAIM!\n\nKupon disimpan. Siap-siap tentukan rute liburan weekend ini, Uqii bakal jadi supir setiamu! 🚗💨");
+                alert("🎟️ Voucher Jalan-Jalan BERHASIL DIKLAIM!\n\nSiap-siap tentukan rute liburan weekend ini, Uqii bakal jadi supir setiamu! 🚗💨");
             }
         }
 
-        // FUNGSI SPAM KANGEN (LOVE BUZZER)
+        // LOVE BUZZER
         const teksBuzzer = [
             "Uqii juga kangen bangeeet sama Zaraaa! 🥺❤️",
             "Jangan cuek-cuek yaa, ayo ketemu! 🫶🏻",
@@ -364,7 +351,6 @@
         function pencetBuzzer() {
             const indexAcak = Math.floor(Math.random() * teksBuzzer.length);
             document.getElementById("buzzer-text").innerText = teksBuzzer[indexAcak];
-            if (navigator.vibrate) { navigator.vibrate(80); }
         }
 
         // MUSIC CONTROL
