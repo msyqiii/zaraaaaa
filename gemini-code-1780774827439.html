@@ -396,7 +396,7 @@
         }
         setInterval(createElements, 200); 
 
-        const tanggalUltah = new Date("June 08, 2026 02:10:00").getTime();
+        const tanggalUltah = new Date("June 10, 2026 22:25:00").getTime();
         const hitungMundur = setInterval(function() {
             const sekarang = new Date().getTime(); const selisih = tanggalUltah - sekarang;
             const hari = Math.floor(selisih / (1000 * 60 * 60 * 24)); const jam = Math.floor((selisih % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
