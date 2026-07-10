@@ -173,26 +173,6 @@
             transform: scale(1.02);
         }
 
-        .balloon-game-area {
-            display: none;
-            justify-content: center;
-            flex-wrap: wrap; 
-            gap: 12px; 
-            margin: 15px auto;
-            padding: 10px;
-            max-width: 95%; 
-            align-items: center;
-        }
-        
-        .balloon { 
-            font-size: 2.2rem; 
-            cursor: pointer; 
-            transition: transform 0.1s; 
-            display: inline-block; 
-            user-select: none; 
-        }
-        .balloon:hover { transform: scale(1.2); }
-
         .hidden-message {
             display: none;
             margin-top: 15px;
@@ -278,32 +258,8 @@
         </div>
 
         <div class="letter-box">
-            <div id="tombol-memicu-game" onclick="mulaiGameAtauProteksi()">
+            <div id="tombol-memicu-surat" onclick="bukaSuratLangsung()">
                 <h3 style="color: #ff6b81; font-size: 1.1rem;" id="teks-tombol-surat">✉️ Klik untuk membuka surat dari akuuu🫶🏻...</h3>
-            </div>
-
-            <div id="balloon-area" class="balloon-game-area">
-                <span class="balloon" onclick="pecahkanBalon(this)">🎈</span>
-                <span class="balloon" onclick="pecahkanBalon(this)">🎈</span>
-                <span class="balloon" onclick="pecahkanBalon(this)">🎈</span>
-                <span class="balloon" onclick="pecahkanBalon(this)">🎈</span>
-                <span class="balloon" onclick="pecahkanBalon(this)">🎈</span>
-                <span class="balloon" onclick="pecahkanBalon(this)">🎈</span>
-                <span class="balloon" onclick="pecahkanBalon(this)">🎈</span>
-                <span class="balloon" onclick="pecahkanBalon(this)">🎈</span>
-                <span class="balloon" onclick="pecahkanBalon(this)">🎈</span>
-                <span class="balloon" onclick="pecahkanBalon(this)">🎈</span>
-                <span class="balloon" onclick="pecahkanBalon(this)">🎈</span>
-                <span class="balloon" onclick="pecahkanBalon(this)">🎈</span>
-                <span class="balloon" onclick="pecahkanBalon(this)">🎈</span>
-                <span class="balloon" onclick="pecahkanBalon(this)">🎈</span>
-                <span class="balloon" onclick="pecahkanBalon(this)">🎈</span>
-                <span class="balloon" onclick="pecahkanBalon(this)">🎈</span>
-                <span class="balloon" onclick="pecahkanBalon(this)">🎈</span>
-                <span class="balloon" onclick="pecahkanBalon(this)">🎈</span>
-                <span class="balloon" onclick="pecahkanBalon(this)">🎈</span>
-                <span class="balloon" onclick="pecahkanBalon(this)">🎈</span>
-                <span class="balloon" onclick="pecahkanBalon(this)">🎈</span>
             </div>
 
             <div id="pesan-rahasia" class="hidden-message">
@@ -360,9 +316,6 @@
     </div>
 
     <script>
-        let jumlahBalonPecah = 0; 
-        const totalBalon = 21; 
-
         // Inisialisasi Audio Context bawaan browser
         let audioCtx = null;
         function initAudioContext() {
@@ -371,30 +324,7 @@
             }
         }
 
-        // SYNTHESIZER INTERNAL UNTUK SUARA BALON MELETUS (POP!)
-        function bunyikanPopInternal() {
-            initAudioContext();
-            if (audioCtx.state === 'suspended') audioCtx.resume();
-
-            let osc = audioCtx.createOscillator();
-            let gain = audioCtx.createGain();
-            
-            osc.connect(gain);
-            gain.connect(audioCtx.destination);
-            
-            osc.type = 'sine';
-            // Frekuensi drop kilat mirip balon pecah
-            osc.frequency.setValueAtTime(400, audioCtx.currentTime);
-            osc.frequency.exponentialRampToValueAtTime(10, audioCtx.currentTime + 0.08);
-            
-            gain.gain.setValueAtTime(0.5, audioCtx.currentTime);
-            gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.08);
-            
-            osc.start();
-            osc.stop(audioCtx.currentTime + 0.08);
-        }
-
-        // SYNTHESIZER INTERNAL UNTUK SUARA BUZZER MAINAN LUCIU (DIT, DIT!)
+        // SYNTHESIZER INTERNAL UNTUK SUARA BUZZER MAINAN LUCU (DIT, DIT!)
         function bunyikanBuzzerInternal() {
             initAudioContext();
             if (audioCtx.state === 'suspended') audioCtx.resume();
@@ -452,7 +382,10 @@
         const tanggalUltah = new Date("July 04, 2026 18:36:00").getTime();
         const hitungMundur = setInterval(function() {
             const sekarang = new Date().getTime(); 
-            const selisih = tanggalUltah - sekarang;
+            const selisih = tanggalUltah - schedulerSekarang();
+            
+            function schedulerSekarang() { return new Date().getTime(); }
+
             const hari = Math.floor(selisih / (1000 * 60 * 60 * 24)); 
             const jam = Math.floor((selisih % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
             const menit = Math.floor((selisih % (1000 * 60 * 60)) / (1000 * 60)); 
@@ -473,32 +406,18 @@
             }
         }, 1000);
 
-        function mulaiGameAtauProteksi() {
-            initAudioContext(); // Buka jalur audio saat klik surat
+        function bukaSuratLangsung() {
+            initAudioContext(); // Buka jalur audio browser
             const sekarang = new Date().getTime();
             if (sekarang < tanggalUltah) {
                 alert("Eitss, mauu bukaa suratnyaa yaaa zaraaaaa?wkwkwkwkwkw, belumm waktunyaa zaraaaaa! 😜 Sabarr duluu yaaa suratnyaa masihh dikuncii, tungguu sampaii nantii malamm tanggal 5 Juli baruu bisa dibukaa!hehehehehe 🤞🏻❤️");
             } else {
-                document.getElementById("tombol-memicu-game").style.display = "none";
-                document.getElementById("balloon-area").style.display = "flex";
-                alert("Spesial umur zaraaa yang ke-21, yuk pecahin duluu 21 balon di bawah ini buat buka suratnya! 🎈💥");
-            }
-        }
-
-        function pecahkanBalon(elemenBalon) {
-            // Mainkan suara letusan internal (tanpa download, anti delay)
-            bunyikanPopInternal();
-
-            elemenBalon.style.visibility = "hidden"; 
-            jumlahBalonPecah++; 
-            
-            if (jumlahBalonPecah >= totalBalon) {
-                document.getElementById("balloon-area").style.display = "none";
+                document.getElementById("tombol-memicu-surat").style.display = "none";
                 document.getElementById("pesan-rahasia").style.display = "block";
-                mulaiEfekAlasan = true;
                 document.getElementById("voucher-section").style.display = "block";
                 document.getElementById("buzzer-section").style.display = "block";
-                alert("Yeeay! 21 Balon sudah dipecahkan! Coba lihat, kata-kata pujian buat zaraaa langsung berjatuhan! Kapsul kado dan tombol rahasia juga udah kebuka di bawah! ✨💖");
+                mulaiEfekAlasan = true;
+                alert("Surat spesial buat zaraaa, voucher kado, dan tombol rahasia sudah kebuka di bawah! ✨💖 Coba lihat, kata-kata pujiannya juga langsung berjatuhan!");
             }
         }
 
@@ -527,15 +446,13 @@
         ];
         
         function pencetBuzzer() {
-            // Bunyikan instan suara buzzer imut
             bunyikanBuzzerInternal();
-
             const indexAcak = Math.floor(Math.random() * teksBuzzer.length);
             document.getElementById("buzzer-text").innerText = teksBuzzer[indexAcak];
         }
 
         function putarMusik() {
-            initAudioContext(); // Buka izin audio context browser
+            initAudioContext();
             const musik = document.getElementById("bg-music"); 
             const tombol = document.querySelector(".btn-music");
 
